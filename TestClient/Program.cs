@@ -84,12 +84,85 @@ namespace MSFTest
             MailMessage mail2 = client.RequestServiceAsync<MailMessage>(request2).Result;
             Console.WriteLine("7,Server Response:【{0}】，\r\n Revovery Time：{1}", mail2.Message, mail2.RevoveryTime);
 
+           
+
+            DateTime serverTime = client.RequestServiceAsync<DateTime>("Service://TestTimeService/ServerTime/", 
+                PWMIS.EnterpriseFramework.Common.DataType.DateTime).Result;
+            Console.WriteLine("MSF Get Server Time:{0}", serverTime);
+        
             Console.WriteLine("按回车键继续");
             Console.ReadLine();
 
 
             Console.WriteLine();
             Console.WriteLine("MSF 发布-订阅 模式调用示例：");
+
+            ServiceRequest request3 = new ServiceRequest();
+            request3.ServiceName = "TestTimeService";
+            request3.MethodName = "ServerTime";
+            int count = 0;
+            client.Subscribe<DateTime>(request3, 
+                PWMIS.EnterpriseFramework.Common.DataType.DateTime, 
+                s => 
+                {
+                    if (s.Succeed)
+                    {
+                        Console.WriteLine("MSF Server Time:{0}", s.Result);
+                      
+                    }
+                    else
+                    {
+                        Console.WriteLine("MSF Server Error:{0}", s.ErrorMessage);
+                    }
+                    count++;
+                    if (count > 10)
+                    {
+                        client.Close();
+                        Console.WriteLine("订阅【服务器时钟服务】结束。按回车键继续。");
+                    }
+                });
+
+            Console.ReadLine();
+            DateTime alarmTime;
+            string strTime;
+            do
+            {
+                Console.Write("请输入闹铃响铃时间(示例输入格式 {0}) >>", DateTime.Now.ToShortTimeString());
+                 strTime = Console.ReadLine();
+            }
+            while (!DateTime.TryParse(strTime, out alarmTime));
+           
+
+            Console.WriteLine("订阅闹钟服务，闹钟将在 {0} 响铃...",strTime);
+
+            ServiceRequest request4 = new ServiceRequest();
+            request4.ServiceName = "AlarmClockService";
+            request4.MethodName = "SetAlarmTime";
+            request4.Parameters = new object[] { alarmTime };
+
+            client.Subscribe<DateTime>(request4,
+                  PWMIS.EnterpriseFramework.Common.DataType.DateTime, 
+                  s =>
+                  {
+                      if (s.Succeed)
+                      {
+                          Console.WriteLine("闹钟响了，现在时间:{0}", s.Result);
+                          if (s.Result == new DateTime(1900, 1, 1))
+                          {
+                              client.Close();
+                              Console.WriteLine("闹铃服务结束，按回车键继续。");
+                          }
+                      }
+                      else
+                      {
+                          Console.WriteLine("MSF Server Error:{0}", s.ErrorMessage);
+                          client.Close();
+                      }
+              });
+
+            Console.ReadLine();
+
+
             string repMsg = "你好！";
 
             client.SubscribeTextMessage("我是客户端", serverMessage => {

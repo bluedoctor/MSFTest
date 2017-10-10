@@ -23,8 +23,8 @@
     </IOC>
     <IOC Name="TestService">
       <Add Key="Calculator" InterfaceName="IService" FullClassName="ServiceSample.TestCalculatorService" Assembly="ServiceSample" />
-      <Add Key="TestTimeService" InterfaceName="IService" FullClassName="ServiceSample.TestTimeService" Assembly="ServiceSample" />
-      <Add Key="AlarmClockService" InterfaceName="IService" FullClassName="ServiceSample.AlarmClockService" Assembly="ServiceSample" />
+      <Add Key="TestTimeService" InterfaceName="IService" FullClassName="TestService.TimeService" Assembly="TestService" />
+      <Add Key="AlarmClockService" InterfaceName="IService" FullClassName="TestService.AlarmClockService" Assembly="TestService" />
       <Add Key="Service1" InterfaceName="IService" FullClassName="TestService.Service1" Assembly="TestService" />
     </IOC>
     <IOC Name="ServiceModel">
