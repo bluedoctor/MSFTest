@@ -1,0 +1,35 @@
+
+------------------------------
+[2017-10-11 09:12:23]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：系统不能处理当前类型的参数：TestDto.AlarmClockParameter，
+请求的Uri:
+Publish://AlarmClockService/SetAlarmTime/TestDto.AlarmClockParameter=TestDto.AlarmClockParameter，
+127.0.0.1:57822,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.ArgumentException: 系统不能处理当前类型的参数：TestDto.AlarmClockParameter
+------------------------------
+[2017-10-11 09:17:05]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：系统不能处理当前类型的参数：TestDto.AlarmClockParameter，
+请求的Uri:
+Publish://AlarmClockService/SetAlarmTime/TestDto.AlarmClockParameter=TestDto.AlarmClockParameter，
+127.0.0.1:57868,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.ArgumentException: 系统不能处理当前类型的参数：TestDto.AlarmClockParameter
+------------------------------
+[2017-10-11 09:19:20]处理服务的时候发生异常：执行服务方法错误：参数处理异常：Unexpected character encountered while parsing value: T. Path '', line 0, position 0.
+源错误信息：Unexpected character encountered while parsing value: T. Path '', line 0, position 0.，
+请求的Uri:
+Publish://AlarmClockService/SetAlarmTime/TestDto.AlarmClockParameter=TestDto.AlarmClockParameter，
+127.0.0.1:57992,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: T. Path '', line 0, position 0.
+   在 Newtonsoft.Json.JsonTextReader.ParseValue()
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.ReadForType(JsonReader reader, JsonContract contract, Boolean hasConverter)
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   在 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   在 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   在 PWMIS.EnterpriseFramework.Service.Basic.ParameterParse.GetObject(ServiceMethodParameter para) 位置 d:\文档资料\old\pdfnet_svn\PWMIS\MessageServiceFramework\PWMISServiceBasic\ServiceMethodParameter.cs:行号 125
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.InitRequestParameters(ServiceRequest request, String& errorMessage)

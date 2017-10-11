@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TestDto;
 
 namespace TestService
 {
@@ -10,7 +11,8 @@ namespace TestService
     {
         System.Timers.Timer timer;
         DateTime AlarmTime;
-        int publishCount;
+        int AlarmCount;
+        int MaxAlarmCount;
 
         public event EventHandler Alarming;
 
@@ -29,30 +31,32 @@ namespace TestService
                     Alarming(this, new EventArgs());
 
                 base.CurrentContext.PublishData(DateTime.Now); //e.SignalTime
-                publishCount++;
-                Console.WriteLine("AlarmClockService Publish Count:{0}", publishCount);
+                AlarmCount++;
+                Console.WriteLine("AlarmClockService Publish Count:{0}", AlarmCount);
             }
             else
             {
                 Console.WriteLine("Alarm Time:{0},AlarmClock waiting...",this.AlarmTime);
             }
-            if (publishCount > 10)
+            if (AlarmCount > MaxAlarmCount)
             {
                 timer.Stop();
                 //推送一个结束标记值：1900-1-1
+                base.CurrentContext.PublishData(new DateTime(1900, 1, 1));
                 Console.WriteLine("[{0}] AlarmClockService Timer Stoped. ", new DateTime(1900,1,1));
                 base.CurrentContext.PublishEventSource.DeActive();
             }
         }
 
 
-        public ServiceEventSource SetAlarmTime(DateTime targetTime)
+        public ServiceEventSource SetAlarmTime(AlarmClockParameter para)
         {
+            this.MaxAlarmCount = para.AlarmCount;
+            this.AlarmTime = para.AlarmTime;
             return new ServiceEventSource(timer, 2, () =>
             {
                 //要初始化执行的代码或者方法
-                publishCount = 0;
-                this.AlarmTime = targetTime;
+                AlarmCount = 0;
                 timer.Start();
                 //如果上面的代码是一个执行时间比较长的方法，但又不知道何时执行完成，
                 //并且不想等待超时回收服务对象，而是在执行完成后立即回收服务对象，可以调用下面的代码：

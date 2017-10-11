@@ -26,8 +26,10 @@
       <Add Key="TestTimeService" InterfaceName="IService" FullClassName="TestService.TimeService" Assembly="TestService" />
       <Add Key="AlarmClockService" InterfaceName="IService" FullClassName="TestService.AlarmClockService" Assembly="TestService" />
       <Add Key="Service1" InterfaceName="IService" FullClassName="TestService.Service1" Assembly="TestService" />
+      
     </IOC>
     <IOC Name="ServiceModel">
+      <Add Key="AlarmClockParameter"  InterfaceName=""  FullClassName="TestDto.AlarmClockParameter" Assembly="TestDto" />
       <Add Key="TimeCount"  InterfaceName=""  FullClassName="Model.TimeCount" Assembly="Model" />
       <!-- 下面4个是消息服务框架必须的ServiceModel -->
       <Add Key="ServiceIdentity"  InterfaceName=""  FullClassName="PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity" Assembly="PWMIS.EnterpriseFramework.Service.Runtime" />

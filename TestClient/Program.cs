@@ -134,11 +134,14 @@ namespace MSFTest
            
 
             Console.WriteLine("订阅闹钟服务，闹钟将在 {0} 响铃...",strTime);
+            AlarmClockParameter acp = new AlarmClockParameter();
+            acp.AlarmCount = 10;
+            acp.AlarmTime = alarmTime;
 
             ServiceRequest request4 = new ServiceRequest();
             request4.ServiceName = "AlarmClockService";
             request4.MethodName = "SetAlarmTime";
-            request4.Parameters = new object[] { alarmTime };
+            request4.Parameters = new object[] { acp };
 
             client.Subscribe<DateTime>(request4,
                   PWMIS.EnterpriseFramework.Common.DataType.DateTime, 
