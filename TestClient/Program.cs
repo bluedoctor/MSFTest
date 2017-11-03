@@ -89,13 +89,30 @@ namespace MSFTest
             DateTime serverTime = client.RequestServiceAsync<DateTime>("Service://TestTimeService/ServerTime/", 
                 PWMIS.EnterpriseFramework.Common.DataType.DateTime).Result;
             Console.WriteLine("MSF Get Server Time:{0}", serverTime);
-        
+
+           
+          
             Console.WriteLine("按回车键继续");
             Console.ReadLine();
 
 
             Console.WriteLine();
             Console.WriteLine("MSF 发布-订阅 模式调用示例：");
+            Console.WriteLine("--1，测试服务端多任务--------");
+
+            ServiceRequest reqTask = new ServiceRequest();
+            reqTask.ServiceName = "TestTimeService";
+            reqTask.MethodName = "TestTask";
+            client.Subscribe<string>(reqTask, PWMIS.EnterpriseFramework.Common.DataType.Text, s => {
+                if (s.Succeed)
+                    Console.WriteLine("Server Message:{0}", s.Result);
+                else
+                    Console.WriteLine("Server Error:{0}", s.ErrorMessage);
+            });
+            Console.WriteLine("按回车键继续");
+            Console.ReadLine();
+
+            Console.WriteLine("--2，测试服务端事件（分布式事件）--------");
 
             ServiceRequest request3 = new ServiceRequest();
             request3.ServiceName = "TestTimeService";
