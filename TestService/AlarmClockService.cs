@@ -9,55 +9,44 @@ namespace TestService
 {
     public class AlarmClockService:ServiceBase
     {
-        System.Timers.Timer timer;
-        DateTime AlarmTime;
-        int AlarmCount;
-        int MaxAlarmCount;
+        AlarmClockModel AlarmClock;
 
         public event EventHandler Alarming;
 
         public AlarmClockService()
         {
-            timer = new System.Timers.Timer();
-            timer.Interval = 10000;
-            timer.Elapsed += timer_Elapsed;
+            AlarmClock = new AlarmClockModel();
+            AlarmClock.Alarming += AlarmClock_Alarming;
+            AlarmClock.StopAlarm += AlarmClock_StopAlarm;
         }
 
-        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void AlarmClock_StopAlarm(object sender, EventArgs e)
         {
-            if (e.SignalTime >= this.AlarmTime)
-            {
-                if (Alarming != null)
-                    Alarming(this, new EventArgs());
-
-                base.CurrentContext.PublishData(DateTime.Now); //e.SignalTime
-                AlarmCount++;
-                Console.WriteLine("AlarmClockService Publish Count:{0}", AlarmCount);
-            }
-            else
-            {
-                Console.WriteLine("Alarm Time:{0},AlarmClock waiting...",this.AlarmTime);
-            }
-            if (AlarmCount > MaxAlarmCount)
-            {
-                timer.Stop();
-                //推送一个结束标记值：1900-1-1
-                base.CurrentContext.PublishData(new DateTime(1900, 1, 1));
-                Console.WriteLine("[{0}] AlarmClockService Timer Stoped. ", new DateTime(1900,1,1));
-                base.CurrentContext.PublishEventSource.DeActive();
-            }
+            //推送一个结束标记值：1900-1-1
+            // PublishDistributeEvent(data);
+            base.CurrentContext.PublishData(new DateTime(1900, 1, 1));
+            Console.WriteLine("[{0}] AlarmClock Service Timer Stoped. ", DateTime.Now);
+            base.CurrentContext.PublishEventSource.DeActive();
         }
+
+        private void AlarmClock_Alarming(object sender, EventArgs e)
+        {
+            //向客户端推送正在响铃的事件
+            // PublishDistributeEvent(data);
+            base.CurrentContext.PublishData(DateTime.Now);
+            Console.WriteLine("AlarmClock AlarmCount:{0}", AlarmClock.AlarmCount);
+        }
+
+       
 
 
         public ServiceEventSource SetAlarmTime(AlarmClockParameter para)
         {
-            this.MaxAlarmCount = para.AlarmCount;
-            this.AlarmTime = para.AlarmTime;
-            return new ServiceEventSource(timer, 2, () =>
+            return new ServiceEventSource(AlarmClock, 2, () =>
             {
                 //要初始化执行的代码或者方法
-                AlarmCount = 0;
-                timer.Start();
+                AlarmClock.SetAlarm(para.AlarmTime, para.AlarmCount);
+
                 //如果上面的代码是一个执行时间比较长的方法，但又不知道何时执行完成，
                 //并且不想等待超时回收服务对象，而是在执行完成后立即回收服务对象，可以调用下面的代码：
                 //CurrentContext.PublishEventSource.DeActive();
