@@ -11,8 +11,6 @@ namespace TestService
     {
         AlarmClockModel AlarmClock;
 
-        public event EventHandler Alarming;
-
         public AlarmClockService()
         {
             AlarmClock = new AlarmClockModel();
@@ -24,7 +22,7 @@ namespace TestService
         {
             //推送一个结束标记值：1900-1-1
             // PublishDistributeEvent(data);
-            base.CurrentContext.PublishData(new DateTime(1900, 1, 1));
+            base.PublishDistributeEvent(new DateTime(1900, 1, 1));
             Console.WriteLine("[{0}] AlarmClock Service Timer Stoped. ", DateTime.Now);
             base.CurrentContext.PublishEventSource.DeActive();
         }
@@ -33,7 +31,7 @@ namespace TestService
         {
             //向客户端推送正在响铃的事件
             // PublishDistributeEvent(data);
-            base.CurrentContext.PublishData(DateTime.Now);
+            base.PublishDistributeEvent(DateTime.Now);
             Console.WriteLine("AlarmClock AlarmCount:{0}", AlarmClock.AlarmCount);
         }
 

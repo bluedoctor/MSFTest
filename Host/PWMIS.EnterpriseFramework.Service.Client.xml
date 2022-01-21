@@ -349,7 +349,7 @@
             <param name="function">回调函数</param>
             <returns>异步任务对象</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``5(System.String,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0},PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2},PWMIS.EnterpriseFramework.Common.MyFunc{``3,``4})" -->
+        <!-- 对于成员“M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``5(System.String,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0},PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2},PWMIS.EnterpriseFramework.Common.MyFunc{``3,``4})”忽略有格式错误的 XML 注释 -->
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0})">
             <summary>
             请求远程服务并且处理返回消息

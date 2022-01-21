@@ -13,6 +13,7 @@ namespace MSFTest
     {
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("******** PDF.NET MSF 客户端测试程序 *********");
             Console.WriteLine();
             Proxy client = new Proxy();
@@ -31,6 +32,7 @@ namespace MSFTest
 
             client.ServiceBaseUri = string.Format("net.tcp://{0}:{1}", host, port);
             Console.WriteLine("当前客户端代理的服务基础地址是：{0}",client.ServiceBaseUri);
+            Console.ResetColor();
             Console.WriteLine();
             Console.WriteLine("MSF 请求-响应 模式调用示例：");
 
